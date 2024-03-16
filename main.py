@@ -119,34 +119,9 @@ async def get_all_workouts():
     return workouts
 
 
-# def delete_exercise(exercise_id: str, db: DatabaseManager = Depends(get_db)):
-    
-#     db.connect()
-#     with db.connection.cursor() as cursor:
-#         cursor.execute("SELECT id FROM exercises WHERE id = %s", (exercise_id,))
-#         existing = cursor.fetchone()
-#     db.close()
-
-#     if not existing:
-#         raise HTTPException(status_code=404, detail="Exercise not found")
-
-    
-#     db.delete_exercise(exercise_id)
-
-#     return {"message": "Exercise deleted successfully"}
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8008)
     
     
-"""
-1) save push token
-2) sign in by apple
-3) save/update my level
-4) get list of workouts
-5) update specific workouts for level (for getting right in list). or i can save locally user choise. But in this case  i need in list request all levels excercies in workout
-6) update workout finished 
-7) workout history
-8) delete me
-"""

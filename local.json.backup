@@ -302,24 +302,6 @@
           "totalTime": 100,
           "level": 1,
           "videoLink": "videos/947a1942-416d-429c-a0c0-4c8d78f8dd08.mp4"
-        },
-        {
-          "name": "Intermediate Ball Control Drills",
-          "approach": 2,
-          "time": 15,
-          "repetition": 8,
-          "totalTime": 120,
-          "level": 2,
-          "videoLink": "videos/947a1942-416d-429c-a0c0-4c8d78f8dd08.mp4"
-        },
-        {
-          "name": "Advanced Ball Handling Skills",
-          "approach": 3,
-          "time": 20,
-          "repetition": 6,
-          "totalTime": 120,
-          "level": 3,
-          "videoLink": "videos/947a1942-416d-429c-a0c0-4c8d78f8dd08.mp4"
         }
       ]
     },
@@ -331,30 +313,12 @@
       },
       "exercises_data": [
         {
-          "name": "Basic Dribbling Fundamentals",
-          "approach": 1,
-          "time": 10,
-          "repetition": 10,
-          "totalTime": 100,
-          "level": 1,
-          "videoLink": "videos/963bde02-f6bc-462c-9016-58173a3256b6.mp4"
-        },
-        {
           "name": "Dribbling Drills",
           "approach": 1,
           "time": 15,
           "repetition": 15,
           "totalTime": 225,
           "level": 2,
-          "videoLink": "videos/963bde02-f6bc-462c-9016-58173a3256b6.mp4"
-        },
-        {
-          "name": "Advanced Dribbling Techniques",
-          "approach": 3,
-          "time": 20,
-          "repetition": 10,
-          "totalTime": 200,
-          "level": 3,
           "videoLink": "videos/963bde02-f6bc-462c-9016-58173a3256b6.mp4"
         }
       ]
@@ -366,24 +330,6 @@
         "type": "Comprehensive Soccer Skills"
       },
       "exercises_data": [
-        {
-          "name": "Basic Passing and Receiving",
-          "approach": 1,
-          "time": 10,
-          "repetition": 10,
-          "totalTime": 100,
-          "level": 1,
-          "videoLink": "videos/704f4da0-92e2-4667-b71e-f91ba02598bb.mp4"
-        },
-        {
-          "name": "Intermediate Ball Control",
-          "approach": 2,
-          "time": 15,
-          "repetition": 12,
-          "totalTime": 180,
-          "level": 2,
-          "videoLink": "videos/704f4da0-92e2-4667-b71e-f91ba02598bb.mp4"
-        },
         {
           "name": "Complete Soccer Drills",
           "approach": 3,
@@ -439,15 +385,6 @@
       },
       "exercises_data": [
         {
-          "name": "Beginner Footwork Drills",
-          "approach": 1,
-          "time": 10,
-          "repetition": 8,
-          "totalTime": 80,
-          "level": 1,
-          "videoLink": "videos/78934220-b663-4bf8-a95f-09007d0c016e.mp4"
-        },
-        {
           "name": "Fast Feet Drills",
           "approach": 2,
           "time": 10,
@@ -455,18 +392,9 @@
           "totalTime": 100,
           "level": 2,
           "videoLink": "videos/78934220-b663-4bf8-a95f-09007d0c016e.mp4"
-        },
-        {
-          "name": "Advanced Agility Drills",
-          "approach": 3,
-          "time": 12,
-          "repetition": 12,
-          "totalTime": 144,
-          "level": 3,
-          "videoLink": "videos/78934220-b663-4bf8-a95f-09007d0c016e.mp4"
         }
       ]
-    },    
+    },
     {
       "workout_data": {
         "date": "2024-03-02T00:00:00",

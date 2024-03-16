@@ -37,18 +37,21 @@ def update_workout_times(db_config, workout_id_time_mapping):
         cursorclass=pymysql.cursors.DictCursor
     )
 
+    workout_ids = list(workout_id_time_mapping.keys())
+    half_point = len(workout_ids) // 2  
+
     try:
         with connection.cursor() as cursor:
-            for workout_id, time_str in workout_id_time_mapping.items():
-
-                new_datetime = datetime.now() + timedelta(days=1)  
+            for i, workout_id in enumerate(workout_ids):
+                
+                days_to_add = 1 if i < half_point else 2
+                new_datetime = datetime.now() + timedelta(days=days_to_add)
+                time_str = workout_id_time_mapping[workout_id]
                 new_datetime_str = new_datetime.strftime(f"%Y-%m-%d {time_str}")
 
-                
                 update_query = "UPDATE workouts SET date = %s WHERE id = %s"
                 cursor.execute(update_query, (new_datetime_str, workout_id))
 
-            
             connection.commit()
             print("Workout times updated successfully.")
     except Exception as e:

@@ -5,13 +5,53 @@ import pymysql.cursors
 import uuid
 from models import *
 from collections import defaultdict
+import json
 
 router = APIRouter()
+
+
+
+
+DB_CONFIG = {
+    'host': "localhost",
+    'user': "boogie",
+    'password': "DontGazeSkugge",
+    'database': "dimasapp"
+}
+
+def get_db_connection():
+    return pymysql.connect(**DB_CONFIG)
+
+def load_workouts_from_json() -> List[Dict]:
+    with open('local.json') as f:
+        return json.load(f)
+    
+def get_available_workout_ids(user_id: str) -> List[int]:
+    with get_db_connection() as connection:
+        with connection.cursor() as cursor:
+            query = """
+            SELECT DISTINCT w.id, w.date, w.type, w.level FROM workouts w
+            LEFT JOIN workout_history h ON w.id = h.workout_id AND h.user_id = %s
+            WHERE w.date > %s OR h.workout_id IS NULL
+            ORDER BY w.date ASC
+            """
+            now_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            cursor.execute(query, (user_id, now_str))
+            result = cursor.fetchall()
+            
+            return [row[0] for row in result]
+
+
+
+def filetr_workouts(ids: [int], available: [int]):
+    data = load_workouts_from_json()
+    return [data[ctr] for ctr, id in enumerate(available) if id in ids]
 
 class UserBase(BaseModel):
     id: str
     token: str
     level: int
+    goal: Optional[int] = None
 
 class UserCreate(UserBase):
     pass
@@ -19,6 +59,12 @@ class UserCreate(UserBase):
 class UserUpdate(BaseModel):
     token: str
     level: int
+    goal: Optional[int] = None
+    
+    
+
+class PointsUpdateRequest(BaseModel):
+    points: int
 
 
 def get_db():
@@ -35,8 +81,8 @@ def get_db():
 @router.post("/users/", response_model=UserBase)
 def create_user(user: UserCreate, db=Depends(get_db)):
     with db.cursor() as cursor:
-        sql = "INSERT INTO users (id, token, level) VALUES (%s, %s, %s)"
-        cursor.execute(sql, (str(user.id), user.token, user.level))
+        sql = "INSERT INTO users (id, token, level, goal) VALUES (%s, %s, %s, %s)"
+        cursor.execute(sql, (user.id, user.token, user.level, user.goal))
         db.commit()
     return user
 
@@ -61,58 +107,52 @@ def read_user(user_id: str, db=Depends(get_db)):
 @router.put("/users/{user_id}", response_model=UserBase)
 def update_user(user_id: str, user: UserUpdate, db=Depends(get_db)):
     with db.cursor() as cursor:
-        sql = "UPDATE users SET token = %s, level = %s WHERE id = %s"
-        cursor.execute(sql, (user.token, user.level, user_id))
+        sql = "UPDATE users SET token = %s, level = %s, goal = %s WHERE id = %s"
+        cursor.execute(sql, (user.token, user.level, user.goal, user_id))
+        if cursor.rowcount == 0:
+            raise HTTPException(status_code=404, detail="User not found")
         db.commit()
     return {**user.dict(), "id": user_id}
 
 
+@router.patch("/users/{user_id}/points", response_model=dict)
+def update_user_points(user_id: str, points_update: PointsUpdateRequest, db=Depends(get_db)):
+    with db.cursor() as cursor:
+
+        sql = "UPDATE users SET points = %s WHERE id = %s"
+        cursor.execute(sql, (points_update.points, user_id))
+        affected_rows = cursor.rowcount
+        db.commit()
+        
+    if affected_rows:
+
+        return {"message": "success"}
+    else:
+
+        return {"message": "failure"}
+
+
+
+def get_db():
+    return pymysql.connect(
+        host="localhost",
+        user="boogie",
+        password="DontGazeSkugge",
+        database="dimasapp",
+        cursorclass=pymysql.cursors.DictCursor
+    )
+
+
+
 @router.get("/users/{user_id}/available_workouts/", response_model=List[WorkoutDTO])
 def get_available_workouts(user_id: str, db=Depends(get_db)):
-    with db.cursor() as cursor:
-        # Fetch IDs of workouts the user has completed
-        cursor.execute("SELECT workout_id FROM workout_history WHERE user_id = %s", (user_id,))
-        completed_workouts = cursor.fetchall()
-        completed_ids = [workout['workout_id'] for workout in completed_workouts]
 
-        # Fetch available workouts not completed by the user
-        query = """
-        SELECT id, date, type, level FROM workouts
-        WHERE id NOT IN (%s)
-        """ % ', '.join(['%s'] * len(completed_ids)) if completed_ids else "SELECT id, date, type, level FROM workouts"
-
-        cursor.execute(query, completed_ids)
-        available_workouts = cursor.fetchall()
-
-        workouts = []
-        for workout in available_workouts:
-            cursor.execute("SELECT * FROM exercises WHERE workoutId = %s", (workout['id'],))
-            exercises = cursor.fetchall()
-
-            exercises_by_level = defaultdict(list)
-            for exercise in exercises:
-                level_key = f"level{exercise['level']}"
-                exercises_by_level[level_key].append(ExerciseDTO(
-                    id=exercise['id'],
-                    name=exercise['name'],
-                    approach=exercise['approach'],
-                    time=exercise['time'],
-                    repetition=exercise['repetition'],
-                    totalTime=exercise['totalTime'],
-                    videoLink=exercise['videoLink'],
-                    level=exercise['level']
-                ))
-            
-            workouts.append(WorkoutDTO(
-                id=workout['id'],
-                date=workout['date'],
-                level=workout['level'],
-                type=workout['type'],
-                exercises=dict(exercises_by_level)
-            ))
-
-    return workouts
-
+    current_datetime = datetime.now()
+    available_workout_ids = get_available_workout_ids(user_id)
+    filtered = filetr_workouts(available_workout_ids, available_workout_ids)
+    # workouts_dto = transform_to_workout_dto(filtered_workouts)
+    
+    return filtered
 
 @router.delete("/users/{user_id}")
 def delete_user(user_id: str, db=Depends(get_db)):
