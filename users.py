@@ -5,47 +5,23 @@ import pymysql.cursors
 import uuid
 from models import *
 from collections import defaultdict
-import json
+
 
 router = APIRouter()
 
 
 
+def filter_workouts_by_ids(workout_ids: List[int]) -> List[Dict]:
+    """
+    Filters workouts from 'local.json' based on provided IDs.
 
-DB_CONFIG = {
-    'host': "localhost",
-    'user': "boogie",
-    'password': "DontGazeSkugge",
-    'database': "dimasapp"
-}
+    :param workout_ids: List of workout IDs to filter by.
+    :return: A list of filtered workout dictionaries.
+    """
+    all_workouts = load_workouts_from_json()
+    filtered_workouts = [workout for workout in all_workouts if workout.get("id") in workout_ids]
+    return filtered_workouts
 
-def get_db_connection():
-    return pymysql.connect(**DB_CONFIG)
-
-def load_workouts_from_json() -> List[Dict]:
-    with open('local.json') as f:
-        return json.load(f)
-    
-def get_available_workout_ids(user_id: str) -> List[int]:
-    with get_db_connection() as connection:
-        with connection.cursor() as cursor:
-            query = """
-            SELECT DISTINCT w.id, w.date, w.type, w.level FROM workouts w
-            LEFT JOIN workout_history h ON w.id = h.workout_id AND h.user_id = %s
-            WHERE w.date > %s OR h.workout_id IS NULL
-            ORDER BY w.date ASC
-            """
-            now_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            cursor.execute(query, (user_id, now_str))
-            result = cursor.fetchall()
-            
-            return [row[0] for row in result]
-
-
-
-def filetr_workouts(ids: [int], available: [int]):
-    data = load_workouts_from_json()
-    return [data[ctr] for ctr, id in enumerate(available) if id in ids]
 
 class UserBase(BaseModel):
     id: str
@@ -146,13 +122,48 @@ def get_db():
 
 @router.get("/users/{user_id}/available_workouts/", response_model=List[WorkoutDTO])
 def get_available_workouts(user_id: str, db=Depends(get_db)):
+    with db.cursor() as cursor:
+        now_str = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        query = """
+        SELECT DISTINCT w.id, w.date, w.type, w.level FROM workouts w
+        LEFT JOIN workout_history h ON w.id = h.workout_id AND h.user_id = %s
+        WHERE w.date > %s OR h.workout_id IS NULL
+        ORDER BY w.date ASC
+        """
+        cursor.execute(query, (user_id, now_str))
+        available_workouts = cursor.fetchall()
 
-    current_datetime = datetime.now()
-    available_workout_ids = get_available_workout_ids(user_id)
-    filtered = filetr_workouts(available_workout_ids, available_workout_ids)
-    # workouts_dto = transform_to_workout_dto(filtered_workouts)
-    
-    return filtered
+        workouts = []
+        for workout in available_workouts:
+            cursor.execute("SELECT * FROM exercises WHERE workoutId = %s", (workout['id'],))
+            exercises = cursor.fetchall()
+
+            exercises_by_level = defaultdict(list)
+            for exercise in exercises:
+                exercise_dto = ExerciseDTO(
+                    id=exercise['id'],
+                    name=exercise['name'],
+                    approach=exercise['approach'],
+                    time=exercise['time'],
+                    repetition=exercise['repetition'],
+                    totalTime=exercise['totalTime'],
+                    videoLink=exercise['videoLink'],
+                    level=exercise['level']
+                )
+                level_key = f"level{exercise['level']}"
+                exercises_by_level[level_key].append(exercise_dto)
+
+            workout_dto = WorkoutDTO(
+                id=workout['id'],
+                date=workout['date'],
+                level=workout['level'],
+                type=workout['type'],
+                exercises=exercises_by_level
+            )
+            workouts.append(workout_dto)
+
+    db.close()
+    return workouts
 
 @router.delete("/users/{user_id}")
 def delete_user(user_id: str, db=Depends(get_db)):

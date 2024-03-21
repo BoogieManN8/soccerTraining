@@ -133,15 +133,6 @@
           "videoLink": "videos/570d3d9c-a04c-4105-80f4-988bcedf3f12.mp4"
         },
         {
-          "name": "Figure 8 Dribbling Drill",
-          "approach": 2,
-          "time": 20,
-          "repetition": 6,
-          "totalTime": 120,
-          "level": 2,
-          "videoLink": "videos/570d3d9c-a04c-4105-80f4-988bcedf3f12.mp4"
-        },
-        {
           "name": "Wall Training for Passing and Receiving",
           "approach": 3,
           "time": 25,
@@ -172,27 +163,18 @@
           "name": "Ball Mastery Basics",
           "approach": 3,
           "time": 10,
-          "repetition": 5,
-          "totalTime": 30,
-          "level": 1,
+          "repetition": 10,
+          "totalTime": 50,
+          "level": 2,
           "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
         },
         {
           "name": "Figure 8 Drill",
           "approach": 3,
           "time": 10,
-          "repetition": 5,
-          "totalTime": 30,
-          "level": 1,
-          "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
-        },
-        {
-          "name": "Wall Training for Passing",
-          "approach": 3,
-          "time": 10,
-          "repetition": 5,
-          "totalTime": 30,
-          "level": 1,
+          "repetition": 15,
+          "totalTime": 75,
+          "level": 3,
           "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
         }
       ]
@@ -210,15 +192,15 @@
           "time": 15,
           "repetition": 10,
           "totalTime": 30,
-          "level": 2,
+          "level": 1,
           "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
         },
         {
           "name": "Intensive Ball Mastery",
           "approach": 2,
           "time": 15,
-          "repetition": 10,
-          "totalTime": 30,
+          "repetition": 20,
+          "totalTime": 50,
           "level": 2,
           "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
         },
@@ -226,18 +208,9 @@
           "name": "Precision Figure 8 Drill",
           "approach": 2,
           "time": 15,
-          "repetition": 10,
-          "totalTime": 30,
-          "level": 2,
-          "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
-        },
-        {
-          "name": "Dynamic Wall Training",
-          "approach": 2,
-          "time": 15,
-          "repetition": 10,
-          "totalTime": 30,
-          "level": 2,
+          "repetition": 30,
+          "totalTime": 70,
+          "level": 3,
           "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
         }
       ]
@@ -255,24 +228,24 @@
           "time": 20,
           "repetition": 15,
           "totalTime": 20,
-          "level": 3,
+          "level": 1,
           "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
         },
         {
           "name": "Elite Ball Mastery",
           "approach": 1,
           "time": 20,
-          "repetition": 15,
-          "totalTime": 20,
-          "level": 3,
+          "repetition": 30,
+          "totalTime": 35,
+          "level": 2,
           "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
         },
         {
           "name": "Expert Figure 8 Drill",
           "approach": 1,
           "time": 20,
-          "repetition": 15,
-          "totalTime": 20,
+          "repetition": 45,
+          "totalTime": 55,
           "level": 3,
           "videoLink": "videos/732eb07a-9778-4f6f-8b39-1bce0f5428be.mp4"
         },
@@ -415,18 +388,18 @@
           "name": "Two Touch Passing",
           "approach": 1,
           "time": 10,
-          "repetition": 5,
-          "totalTime": 50,
-          "level": 1,
+          "repetition": 10,
+          "totalTime": 80,
+          "level": 2,
           "videoLink": "videos/15abd4b0-7928-48c3-8463-12178c7bd1e3.mp4"
         },
         {
           "name": "1v1 to Goal",
           "approach": 1,
           "time": 10,
-          "repetition": 5,
-          "totalTime": 50,
-          "level": 1,
+          "repetition": 15,
+          "totalTime": 120,
+          "level": 3,
           "videoLink": "videos/15abd4b0-7928-48c3-8463-12178c7bd1e3.mp4"
         }
       ]
@@ -480,7 +453,7 @@
           "time": 15,
           "repetition": 15,
           "totalTime": 225,
-          "level": 3,
+          "level": 1,
           "videoLink": "videos/1ee9a017-e3a8-4590-b21c-8b3fed4488e3.mp4"
         },
         {
@@ -489,6 +462,15 @@
           "time": 20,
           "repetition": 20,
           "totalTime": 400,
+          "level": 2,
+          "videoLink": "videos/1db3d676-fb59-43bd-91f6-01cbc8415d60.mp4"
+        },
+        {
+          "name": "Close Control Dribbling Session",
+          "approach": 3,
+          "time": 20,
+          "repetition": 30,
+          "totalTime": 480,
           "level": 3,
           "videoLink": "videos/1db3d676-fb59-43bd-91f6-01cbc8415d60.mp4"
         }
